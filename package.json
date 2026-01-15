@@ -1,0 +1,63 @@
+{
+  "name": "skyway-stt-client",
+  "version": "0.1.0",
+  "description": "JavaScript SDK for SkyWay STT (Speech-to-Text) service",
+  "homepage": "https://skyway.ntt.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skyway/skyway-stt-client-js.git"
+  },
+  "license": "MIT",
+  "author": "NTT DOCOMO BUSINESS, Inc.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+    "lint": "biome check --error-on-warnings",
+    "lint:fix": "biome check --fix --error-on-warnings",
+    "type-check": "tsc --noEmit",
+    "build": "tsx scripts/build.ts",
+    "build:prod": "pnpm build && pnpm run docs && pnpm license:generate",
+    "test": "vitest run",
+    "test:ci": "vitest run --silent",
+    "test:watch": "vitest",
+    "docs": "typedoc",
+    "docs:serve": "typedoc --watch",
+    "license:generate": "tsx scripts/license.ts generate",
+    "license:check": "tsx scripts/license.ts check"
+  },
+  "keywords": [
+    "skyway",
+    "speech-to-text"
+  ],
+  "packageManager": "pnpm@10.22.0",
+  "devDependencies": {
+    "@arethetypeswrong/core": "^0.18.2",
+    "@biomejs/biome": "^2.3.6",
+    "@skyway-sdk/room": "^2.1.0",
+    "@types/ws": "^8.18.1",
+    "jsdom": "^27.2.0",
+    "tsdown": "^0.16.5",
+    "tsx": "^4.20.6",
+    "typedoc": "^0.28.14",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.10",
+    "ws": "^8.18.3",
+    "zx": "^8.8.5"
+  },
+  "dependencies": {
+    "@skyway-sdk/common": "^2.0.0",
+    "isomorphic-ws": "^5.0.0"
+  }
+}

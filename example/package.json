@@ -1,0 +1,27 @@
+{
+  "name": "tutorial",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "client": "vite",
+    "client:build": "vite build",
+    "client:preview": "vite preview",
+    "server": "node server/main.js",
+    "server:dev": "nodemon server/main.js"
+  },
+  "dependencies": {
+    "@skyway-sdk/room": "^2.1.0",
+    "@skyway-sdk/token": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "jsrsasign": "^11.1.0",
+    "skyway-stt-client": "latest"
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "nodemon": "^3.1.11",
+    "vite": "^7.2.2"
+  }
+}

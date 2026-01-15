@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyWay Speech-To-Text Example</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>SkyWay Speech-To-Text Example</h1>
+    <div class="main-area">
+      <div>
+        <div class="control-panel">
+          <div class="child-panel">
+            <h2>Room</h2>
+            <span>
+              Room Name:
+              <input id="room-name" type="text" placeholder="Enter Room Name" />
+            </span>
+            <span>
+              Member Name:
+              <input
+                id="member-name"
+                type="text"
+                placeholder="Enter Your Name"
+              />
+            </span>
+            <span>
+              <button id="join">Join</button>
+              <button id="leave">Leave</button>
+            </span>
+          </div>
+          <div>
+            <div class="child-panel">
+              <h2>Speech-To-Text</h2>
+              <span>
+                Mode:
+                <select id="stt-mode">
+                  <option value="transcription" selected>transcription</option>
+                  <option value="translation">translation</option>
+                </select>
+              </span>
+              <span>
+                <button id="start">Start</button>
+                <button id="end">End</button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="info-panel">
+          <ul>
+            <li>Room ID: <span id="room-id"></span></li>
+            <li>
+              Member ID:
+              <span id="member-id"></span>
+            </li>
+            <li>STT Status: <span id="stt-status">OFF</span></li>
+          </ul>
+        </div>
+        <div class="video-panel">
+          <video id="local-video" muted playsinline></video>
+          <div id="remote-media-area"></div>
+        </div>
+      </div>
+      <div id="stt-results-container">
+        <h2>STT Results</h2>
+        <div id="stt-results"></div>
+      </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
