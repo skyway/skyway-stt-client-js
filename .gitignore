@@ -156,4 +156,7 @@ example/pnpm-lock.yaml
 example/package-lock.json
 example/yarn.lock
 
-internal-example
+internal-examples
+__tests__
+docs
+scripts

@@ -1,0 +1,158 @@
+.control-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+.control-group {
+  display: flex;
+  gap: 12px;
+}
+
+.control-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.control-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.control-button.active {
+  background: #e74c3c;
+}
+
+.control-button.active:hover {
+  background: #c0392b;
+}
+
+.control-button svg {
+  stroke-width: 2;
+}
+
+.leave-button {
+  background: #e74c3c;
+  margin-left: 24px;
+}
+
+.leave-button:hover {
+  background: #c0392b;
+}
+
+.stt-button.active {
+  background: #3498db;
+}
+
+.stt-button.active:hover {
+  background: #2980b9;
+}
+
+.stt-indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  color: #e74c3c;
+  font-size: 20px;
+  animation: pulse 1.5s infinite;
+}
+
+.mode-switcher {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 4px;
+  gap: 4px;
+  height: 48px;
+  align-items: center;
+}
+
+.mode-switcher.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.mode-option {
+  padding: 0 16px;
+  height: 40px;
+  border-radius: 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mode-option:hover:not(.active) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mode-option.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.mode-button {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 768px) {
+  .control-bar {
+    height: 70px;
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .control-group {
+    gap: 8px;
+  }
+
+  .control-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .leave-button {
+    margin-left: 12px;
+  }
+}

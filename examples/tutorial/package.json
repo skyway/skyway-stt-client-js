@@ -1,0 +1,20 @@
+{
+  "name": "tutorial",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "cd ../server && npm start",
+    "server:dev": "cd ../server && npm run dev",
+    "clean": "rm -rf ./dist ./node_modules"
+  },
+  "dependencies": {
+    "@skyway-sdk/room": "^2.1.0",
+    "skyway-stt-client": "^0.1.0"
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "nodemon": "^3.1.11",
+    "vite": "^7.2.2"
+  }
+}

@@ -25,7 +25,7 @@ const createSkyWayAdminAuthToken = () => {
       jti: uuidV4(),
       appId,
     }),
-    secret
+    secret,
   );
   return token;
 };
@@ -174,7 +174,7 @@ app.delete("/rooms/:roomName/end", async (req, res) => {
       headers: {
         Authorization: `Bearer ${createSkyWayAdminAuthToken()}`,
       },
-    }
+    },
   );
 
   if (!response.ok) {

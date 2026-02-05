@@ -24,9 +24,13 @@
     "LICENSE"
   ],
   "scripts": {
+    "clean": "rm -rf ./dist ./node_modules && pnpm -r clean",
     "lint": "biome check --error-on-warnings",
+    "lint:workspace": "pnpm lint && pnpm -r lint",
     "lint:fix": "biome check --fix --error-on-warnings",
+    "lint:fix:workspace": "pnpm lint:fix && pnpm -r lint:fix",
     "type-check": "tsc --noEmit",
+    "type-check:workspace": "pnpm type-check && pnpm -r type-check",
     "build": "tsx scripts/build.ts",
     "build:prod": "pnpm build && pnpm run docs && pnpm license:generate",
     "test": "vitest run",
@@ -35,7 +39,10 @@
     "docs": "typedoc",
     "docs:serve": "typedoc --watch",
     "license:generate": "tsx scripts/license.ts generate",
-    "license:check": "tsx scripts/license.ts check"
+    "license:check": "tsx scripts/license.ts check",
+    "server:dev": "cd internal-examples/server && pnpm run dev",
+    "tutorial:dev": "cd internal-examples/tutorial && pnpm run dev",
+    "advanced:dev": "cd internal-examples/advanced && pnpm run dev"
   },
   "keywords": [
     "skyway",
@@ -43,9 +50,10 @@
   ],
   "packageManager": "pnpm@10.22.0",
   "devDependencies": {
+    "@types/node": "catalog:",
     "@arethetypeswrong/core": "^0.18.2",
     "@biomejs/biome": "^2.3.6",
-    "@skyway-sdk/room": "^2.1.0",
+    "@skyway-sdk/room": "catalog:",
     "@types/ws": "^8.18.1",
     "jsdom": "^27.2.0",
     "tsdown": "^0.16.5",
