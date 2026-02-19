@@ -1,6 +1,6 @@
 {
   "name": "skyway-stt-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JavaScript SDK for SkyWay STT (Speech-to-Text) service",
   "homepage": "https://skyway.ntt.com/",
   "repository": {
@@ -48,24 +48,24 @@
     "skyway",
     "speech-to-text"
   ],
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.29.3",
   "devDependencies": {
     "@types/node": "catalog:",
     "@arethetypeswrong/core": "^0.18.2",
-    "@biomejs/biome": "^2.3.6",
+    "@biomejs/biome": "^2.4.0",
     "@skyway-sdk/room": "catalog:",
     "@types/ws": "^8.18.1",
     "jsdom": "^27.2.0",
     "tsdown": "^0.16.5",
-    "tsx": "^4.20.6",
+    "tsx": "^4.21.0",
     "typedoc": "^0.28.14",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.10",
-    "ws": "^8.18.3",
+    "vitest": "^4.0.18",
+    "ws": "^8.19.0",
     "zx": "^8.8.5"
   },
   "dependencies": {
-    "@skyway-sdk/common": "^2.0.0",
+    "@skyway-sdk/common": "^2.0.2",
     "isomorphic-ws": "^5.0.0"
   }
 }

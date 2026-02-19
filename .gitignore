@@ -152,9 +152,9 @@ vite.config.ts.timestamp-*
 env.js
 
 # Exclude lock files for example projects
-example/pnpm-lock.yaml
-example/package-lock.json
-example/yarn.lock
+examples/**/pnpm-lock.yaml
+examples/**/package-lock.json
+examples/**/yarn.lock
 
 internal-examples
 __tests__

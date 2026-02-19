@@ -51,27 +51,11 @@ sttClient.onSTTResultReceived.add(({ result }) => {
 - [API リファレンス](https://skyway.ntt.com/ja/docs/api-reference/stt/)
 
 
-# サンプルアプリの起動方法
+# サンプルアプリ
 
-- example ディレクトリに移動する
-- `.env.example` を `.env` にコピーして、必要な情報を設定する
-  - `cp .env.example .env`
-- `.env` ファイルを編集する
+- [tutorial](./examples/tutorial/README.md)
+- [advanced](./examples/advanced/README.md)
 
-```env
-APP_ID=your-app-id
-SECRET=your-secret
-```
-
-- そのディレクトリで以下のコマンドを実行する
-
-  - `npm install`
-  - `npm run client`
-
-- もう一つターミナルを立ち上げて以下のコマンドを実行する
-  - `npm run server`
-
-- コマンドを実行するとローカルサーバが起動するので Web ブラウザで `http://localhost:5173` にアクセスする
 
 # License
 
