@@ -14,6 +14,42 @@ const secret = process.env.SECRET;
 const sttApiBaseUrl = ""; // 利用開始案内メールに記載されている接続先情報URLを指定してください
 const channelApiUrl = "https://channel.skyway.ntt.com/v1/json-rpc";
 
+// 任意: 一括アップロード機能を利用する場合のストレージ設定
+
+const gcsConfig = {
+  service: "GOOGLE_CLOUD_STORAGE",
+  credential: JSON.stringify({
+    // サービスアカウントの鍵のJSONファイルの内容をコピーペーストする
+    type: "",
+    project_id: "",
+    private_key_id: "",
+    private_key: "",
+    client_email: "",
+    client_id: "",
+    auth_uri: "",
+    token_uri: "",
+    auth_provider_x509_cert_url: "",
+    client_x509_cert_url: "",
+  }),
+  bucket: "",
+};
+
+const s3Config = {
+  service: "AMAZON_S3",
+  bucket: "",
+  accessKeyId: "",
+  secretAccessKey: "",
+  region: "",
+};
+
+const wasabiConfig = {
+  service: "WASABI",
+  bucket: "",
+  accessKeyId: "",
+  secretAccessKey: "",
+  endpoint: "",
+};
+
 // Channel API と STT API を操作するためのトークン
 const createSkyWayAdminAuthToken = () => {
   const token = jsrsasign.KJUR.jws.JWS.sign(
@@ -137,6 +173,10 @@ app.post("/rooms/:roomName/start", async (req, res) => {
     },
     body: JSON.stringify({
       mode: sttMode.toUpperCase(),
+      // 文字起こし結果のアーカイブ機能を利用する場合は archive にストレージ設定を指定する
+      // Amazon S3 を使う場合は s3Config
+      // Wasabi を使う場合は wasabiConfig
+      // archive: { storageConfig: gcsConfig },
     }),
   });
 

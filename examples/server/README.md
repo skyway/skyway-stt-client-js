@@ -40,6 +40,43 @@ SECRET=your_secret_key
 const sttApiBaseUrl = ""; // 利用開始案内メールに記載されている接続先情報URLを指定してください
 ```
 
+4. （任意）文字起こし結果のアーカイブ機能を利用する場合は、`src/main.js` で設定を行う:
+
+- `gcsConfig` / `s3Config` / `wasabiConfig` のいずれかの値を設定
+
+```js
+// 以下はGoogle Cloud Storage を利用する場合
+
+const gcsConfig = {
+  service: "GOOGLE_CLOUD_STORAGE",
+  credential: JSON.stringify({
+    // サービスアカウントの鍵のJSONファイルの内容をコピーペーストする
+    type: "",
+    project_id: "",
+    private_key_id: "",
+    private_key: "",
+    client_email: "",
+    client_id: "",
+    auth_uri: "",
+    token_uri: "",
+    auth_provider_x509_cert_url: "",
+    client_x509_cert_url: "",
+  }),
+  bucket: "",
+};
+```
+
+- セッション作成時の `archive` 指定のコメントアウトを外す
+
+```js
+body: JSON.stringify({
+  mode: sttMode.toUpperCase(),
+  // Amazon S3を使う場合は s3Config
+  // Wasabiを使う場合は wasabiConfig
+  archive: { storageConfig: gcsConfig },
+}),
+```
+
 
 ## サーバーの起動
 
