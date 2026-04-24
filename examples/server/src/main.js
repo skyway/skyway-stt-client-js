@@ -128,11 +128,14 @@ app.post("/rooms/:roomName/create", async (req, res) => {
       },
     }),
   });
-  const {
-    result: {
-      channel: { id: roomId },
-    },
-  } = await response.json();
+
+  const json = await response.json();
+  if (!response.ok) {
+    console.error(json);
+    res.status(500).send({ message: "Failed to create room" });
+    return;
+  }
+  const roomId = json.result.channel.id;
   roomNameIdMap[roomName] = roomId;
 
   // 入室できるroomIdを制限したトークンを作成する
@@ -182,8 +185,8 @@ app.post("/rooms/:roomName/start", async (req, res) => {
 
   const json = await response.json();
   if (!response.ok) {
-    console.error(json.error);
-    res.status(500).send({ message: json.error.message });
+    console.error(json);
+    res.status(500).send({ message: "Failed to start transcription" });
     return;
   }
   roomNameRecordingMap[roomName] = json.id;
@@ -218,6 +221,8 @@ app.delete("/rooms/:roomName/end", async (req, res) => {
   );
 
   if (!response.ok) {
+    const json = await response.json();
+    console.error(json);
     res.status(500).send({ message: "Failed to end transcription" });
     return;
   }
