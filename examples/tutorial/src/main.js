@@ -7,6 +7,24 @@ import { SkyWaySTTClient } from "skyway-stt-client";
 
 const SERVER_HOST = "http://localhost:9090";
 
+// 翻訳モードで指定可能な言語については https://skyway.ntt.com/ja/docs/user-guide/stt/support-languages を参照してください。
+const SUPPORTED_LOCALES = [
+  { locale: "ja-JP", flag: "🇯🇵" },
+  { locale: "en-US", flag: "🇺🇸" },
+  { locale: "zh-CN", flag: "🇨🇳" },
+  { locale: "ko-KR", flag: "🇰🇷" },
+  { locale: "th-TH", flag: "🇹🇭" },
+  { locale: "ru-RU", flag: "🇷🇺" },
+  { locale: "vi-VN", flag: "🇻🇳" },
+  { locale: "fil-PH", flag: "🇵🇭" },
+  { locale: "pt-BR", flag: "🇧🇷" },
+  { locale: "es-ES", flag: "🇪🇸" },
+  { locale: "fr-FR", flag: "🇫🇷" },
+  { locale: "ne-NP", flag: "🇳🇵" },
+  { locale: "hi-IN", flag: "🇮🇳" },
+  { locale: "id-ID", flag: "🇮🇩" },
+];
+
 function createSTTMessage(result, member, mode) {
   const messageContainer = document.createElement("div");
   messageContainer.className = `stt-message`;
@@ -37,40 +55,24 @@ function createSTTMessage(result, member, mode) {
     const translationContainer = document.createElement("div");
     translationContainer.className = "stt-translation-container";
 
-    const textJa = result.texts.find((t) => t.language === "ja")?.text;
-    if (textJa) {
-      const jaContainer = document.createElement("div");
-      jaContainer.className = "stt-language-text";
+    for (const { locale, text } of result.texts) {
+      if (!text) continue;
 
-      const jaFlag = document.createElement("span");
-      jaFlag.className = "stt-language-flag";
-      jaFlag.textContent = "🇯🇵";
+      const localeContainer = document.createElement("div");
+      localeContainer.className = "stt-language-text";
 
-      const jaContent = document.createElement("div");
-      jaContent.className = "stt-language-content";
-      jaContent.textContent = textJa;
+      const localeFlag = document.createElement("span");
+      localeFlag.className = "stt-language-flag";
+      localeFlag.textContent =
+        SUPPORTED_LOCALES.find((l) => l.locale === locale)?.flag ?? "🌐";
 
-      jaContainer.appendChild(jaFlag);
-      jaContainer.appendChild(jaContent);
-      translationContainer.appendChild(jaContainer);
-    }
+      const localeContent = document.createElement("div");
+      localeContent.className = "stt-language-content";
+      localeContent.textContent = text;
 
-    const textEn = result.texts.find((t) => t.language === "en")?.text;
-    if (textEn) {
-      const enContainer = document.createElement("div");
-      enContainer.className = "stt-language-text";
-
-      const enFlag = document.createElement("span");
-      enFlag.className = "stt-language-flag";
-      enFlag.textContent = "🇺🇸";
-
-      const enContent = document.createElement("div");
-      enContent.className = "stt-language-content";
-      enContent.textContent = textEn;
-
-      enContainer.appendChild(enFlag);
-      enContainer.appendChild(enContent);
-      translationContainer.appendChild(enContainer);
+      localeContainer.appendChild(localeFlag);
+      localeContainer.appendChild(localeContent);
+      translationContainer.appendChild(localeContainer);
     }
 
     messageContainer.appendChild(header);
@@ -94,7 +96,27 @@ void (async () => {
   const startSTTButton = document.getElementById("start");
   const endSTTButton = document.getElementById("end");
   const sttMode = document.getElementById("stt-mode");
+  const localeArea = document.getElementById("locale-area");
+  const sttLocale1 = document.getElementById("stt-locale-1");
+  const sttLocale2 = document.getElementById("stt-locale-2");
   const sttResults = document.getElementById("stt-results");
+
+  // 翻訳モードの言語選択肢を作成する
+  for (const select of [sttLocale1, sttLocale2]) {
+    for (const { locale, flag } of SUPPORTED_LOCALES) {
+      const option = document.createElement("option");
+      option.value = locale;
+      option.textContent = `${flag} ${locale}`;
+      select.appendChild(option);
+    }
+  }
+  sttLocale1.value = "ja-JP";
+  sttLocale2.value = "en-US";
+
+  // 翻訳モードの場合のみ言語選択を表示する
+  sttMode.onchange = () => {
+    localeArea.hidden = sttMode.value !== "translation";
+  };
 
   const { audio, video } =
     await SkyWayStreamFactory.createMicrophoneAudioAndCameraStream();
@@ -164,6 +186,16 @@ void (async () => {
     room.onStreamPublished.add((e) => subscribeAndAttach(e.publication));
 
     startSTTButton.onclick = async () => {
+      // 翻訳モードの場合は異なる2つの言語を指定する
+      let locales;
+      if (sttMode.value === "translation") {
+        if (sttLocale1.value === sttLocale2.value) {
+          alert("Please select two different locales for translation mode.");
+          return;
+        }
+        locales = [sttLocale1.value, sttLocale2.value];
+      }
+
       const result = await fetch(`${SERVER_HOST}/rooms/${roomName}/start`, {
         method: "POST",
         headers: {
@@ -172,10 +204,15 @@ void (async () => {
         },
         body: JSON.stringify({
           sttMode: sttMode.value,
+          locales,
         }),
       });
       if (result.status === 200) {
         sttStatus.textContent = "ON";
+        // 文字起こし中はモードと言語を変更できないようにする
+        sttMode.disabled = true;
+        sttLocale1.disabled = true;
+        sttLocale2.disabled = true;
         console.log("STT started");
       } else {
         console.error("Failed to Start STT");
@@ -193,6 +230,9 @@ void (async () => {
 
       if (result.status === 200) {
         sttStatus.textContent = "OFF";
+        sttMode.disabled = false;
+        sttLocale1.disabled = false;
+        sttLocale2.disabled = false;
         console.log("STT ended");
       } else {
         console.error("Failed to End STT");

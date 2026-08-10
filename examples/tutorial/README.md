@@ -6,7 +6,7 @@ SkyWay Room SDKとSkyWay STT Clientを使用した基本的なビデオ会議と
 
 - 🎥 **ビデオ会議** - 複数参加者でのビデオ・音声通話
 - 🗣️ **リアルタイム文字起こし** - 音声をリアルタイムでテキストに変換
-- 🌐 **翻訳モード** - 日本語と英語の自動翻訳サポート
+- 🌐 **翻訳モード** - 選択した2言語間の自動翻訳サポート
 - 📝 **文字起こし結果表示** - タイムスタンプと話者名付きの文字起こし結果
 
 ## 前提条件
@@ -18,6 +18,7 @@ SkyWay Room SDKとSkyWay STT Clientを使用した基本的なビデオ会議と
 ## インストール
 
 依存関係をインストール:
+
 ```bash
 npm install
 # または
@@ -35,6 +36,7 @@ pnpm install
 ### 2. フロントエンドサーバーを起動
 
 フロントエンドサーバーを起動します。
+
 ```bash
 npm run dev
 # または
@@ -45,7 +47,7 @@ pnpm dev
 
 ### 3. アプリケーションにアクセス
 
-ブラウザで http://localhost:5173 を開きます。
+ブラウザで <http://localhost:5173> を開きます。
 
 ### 3. ルームに参加
 
@@ -56,11 +58,12 @@ pnpm dev
 ### 4. 文字起こしを使用
 
 1. **Mode**を選択:
-   - `transcription`: 日本語の文字起こしのみ
-   - `translation`: 日本語と英語の翻訳付き文字起こし
-2. **Start**ボタンをクリックして文字起こしを開始
-3. 話すと右側のパネルに文字起こし結果が表示されます
-4. **End**ボタンをクリックして文字起こしを終了
+   - `transcription`: 文字起こしのみ
+   - `translation`: 翻訳付き文字起こし
+2. `translation`を選択した場合は、**Locale 1**と**Locale 2**で翻訳する2つの言語を選択（異なる言語を選択してください）
+3. **Start**ボタンをクリックして文字起こしを開始
+4. 話すと右側のパネルに文字起こし結果が表示されます
+5. **End**ボタンをクリックして文字起こしを終了
 
 ### 5. ルームを退出
 
@@ -92,9 +95,7 @@ tutorial/
 
 ```javascript
 // STT Clientの初期化
-const sttClient = new SkyWaySTTClient(context, me, {
-  domain: "stt-dispatcher.staging.skyway.ntt.com",
-});
+const sttClient = new SkyWaySTTClient(context, me);
 
 // 文字起こし結果の受信
 sttClient.onSTTResultReceived.add(({ result }) => {
@@ -106,6 +107,8 @@ sttClient.onSTTResultReceived.add(({ result }) => {
 
 ```javascript
 // 開始
+// translationモードの場合は翻訳する2つの言語をlocalesに指定する
+// 例: body: JSON.stringify({ sttMode: "translation", locales: ["ja-JP", "en-US"] })
 await fetch(`${SERVER_HOST}/rooms/${roomName}/start`, {
   method: "POST",
   headers: {
@@ -125,7 +128,7 @@ await fetch(`${SERVER_HOST}/rooms/${roomName}/end`, {
 ## STTモード
 
 - **transcription**: リアルタイム音声認識（文字起こし）
-- **translation**: リアルタイム音声認識と翻訳（日本語 ↔️ 英語）
+- **translation**: リアルタイム音声認識と翻訳（選択した2言語間で翻訳）
 
 ## 技術スタック
 

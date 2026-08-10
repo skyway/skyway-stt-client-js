@@ -99,8 +99,8 @@ export function ControlBar({
         <Tooltip
           text={
             sttEnabled
-              ? `Stop live ${sttMode}`
-              : `Start live ${sttMode}`
+              ? `Stop ${sttMode}`
+              : `Start ${sttMode}`
           }
         >
           <button

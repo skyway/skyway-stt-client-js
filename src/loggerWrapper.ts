@@ -1,4 +1,4 @@
-import { type LogLevel, logLevelTypes } from "@skyway-sdk/common";
+import { type LogLevel, logLevelTypes } from "@skyway-sdk/room";
 import type { Logger } from "./types";
 
 /**

@@ -11,17 +11,20 @@ import "./App.css";
 function App() {
   const [transcriptionOpen, setTranscriptionOpen] = useState(false);
 
+  const { localStream, error: mediaError } = useMediaDevices();
+
   const {
-    localStream,
+    state,
     isAudioEnabled,
     isVideoEnabled,
     toggleAudio,
     toggleVideo,
-    error: mediaError,
-  } = useMediaDevices();
-
-  const { state, joinRoom, leaveRoom, startSTT, stopSTT, toggleSTTMode } =
-    useConference();
+    joinRoom,
+    leaveRoom,
+    startSTT,
+    stopSTT,
+    toggleSTTMode,
+  } = useConference();
 
   const handleJoin = async (roomName: string, memberName: string) => {
     if (!localStream) {

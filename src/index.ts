@@ -15,7 +15,7 @@
  * ```
  */
 
-export type { LogLevel } from "@skyway-sdk/common";
+export type { LogLevel } from "@skyway-sdk/room";
 export type { STTResultReceivedEvent } from "./event";
 export {
   SkyWaySTTClient,

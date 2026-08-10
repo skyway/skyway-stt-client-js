@@ -11,10 +11,10 @@ dotenv.config();
 const appId = process.env.APP_ID;
 const secret = process.env.SECRET;
 
-const sttApiBaseUrl = ""; // 利用開始案内メールに記載されている接続先情報URLを指定してください
-const channelApiUrl = "https://channel.skyway.ntt.com/v1/json-rpc";
+const sttApiBaseUrl = "https://speech-to-text.skyway.ntt.com/v1";
+const roomApiUrl = "https://room.skyway.ntt.com/v1/json-rpc";
 
-// 任意: 一括アップロード機能を利用する場合のストレージ設定
+// 任意: アーカイブ機能を利用する場合のストレージ設定
 
 const gcsConfig = {
   service: "GOOGLE_CLOUD_STORAGE",
@@ -50,7 +50,7 @@ const wasabiConfig = {
   endpoint: "",
 };
 
-// Channel API と STT API を操作するためのトークン
+// Room API と STT API を操作するためのトークン
 const createSkyWayAdminAuthToken = () => {
   const token = jsrsasign.KJUR.jws.JWS.sign(
     "HS256",
@@ -112,8 +112,8 @@ app.post("/rooms/:roomName/create", async (req, res) => {
 
   console.log("create", { roomName });
 
-  // リクエストされたroomNameのRoom(Channel)を作成する
-  const response = await fetch(channelApiUrl, {
+  // リクエストされたroomNameのRoomを作成する
+  const response = await fetch(roomApiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -122,7 +122,7 @@ app.post("/rooms/:roomName/create", async (req, res) => {
     body: JSON.stringify({
       jsonrpc: "2.0",
       id: uuidV4(),
-      method: "findOrCreateChannel",
+      method: "findOrCreateRoom",
       params: {
         name: roomName,
       },
@@ -135,7 +135,7 @@ app.post("/rooms/:roomName/create", async (req, res) => {
     res.status(500).send({ message: "Failed to create room" });
     return;
   }
-  const roomId = json.result.channel.id;
+  const roomId = json.result.room.id;
   roomNameIdMap[roomName] = roomId;
 
   // 入室できるroomIdを制限したトークンを作成する
@@ -167,7 +167,7 @@ app.post("/rooms/:roomName/start", async (req, res) => {
     return;
   }
   // 文字起こしを開始する
-  const { sttMode } = req.body;
+  const { sttMode, locales } = req.body;
   const response = await fetch(`${sttApiBaseUrl}/rooms/${roomId}/sessions`, {
     method: "POST",
     headers: {
@@ -176,6 +176,10 @@ app.post("/rooms/:roomName/start", async (req, res) => {
     },
     body: JSON.stringify({
       mode: sttMode.toUpperCase(),
+      // TRANSLATION の場合は異なる2つの言語の指定が必須
+      // TRANSCRIPTION の場合は省略可能（省略時は言語を自動判定して文字起こしを行う）
+      // 指定可能な言語については https://skyway.ntt.com/ja/docs/user-guide/stt/support-languages を参照してください
+      locales,
       // 文字起こし結果のアーカイブ機能を利用する場合は archive にストレージ設定を指定する
       // Amazon S3 を使う場合は s3Config
       // Wasabi を使う場合は wasabiConfig

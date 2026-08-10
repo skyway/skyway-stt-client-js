@@ -64,6 +64,16 @@ li {
   gap: 14px;
 }
 
+#locale-area {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#locale-area[hidden] {
+  display: none;
+}
+
 .info-panel {
   background: white;
   padding: 16px;
@@ -107,7 +117,8 @@ button:hover {
   background-color: #f0f0f0;
 }
 
-button:disabled {
+button:disabled,
+select:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

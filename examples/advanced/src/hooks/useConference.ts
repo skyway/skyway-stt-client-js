@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   SkyWayContext,
   SkyWayRoom,
@@ -30,6 +30,15 @@ export function useConference() {
     ReturnType<typeof SkyWayRoom.Find>
   > | null>(null);
   const [token, setToken] = useState<string>("");
+  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(false);
+
+  const audioPublicationRef = useRef<RoomPublication<LocalAudioStream> | null>(
+    null,
+  );
+  const videoPublicationRef = useRef<RoomPublication<LocalVideoStream> | null>(
+    null,
+  );
 
   const joinRoom = useCallback(
     async (
@@ -77,9 +86,17 @@ export function useConference() {
           }));
         });
 
-        // Publish local streams
-        await me.publish(localAudio, { type: "sfu" });
-        await me.publish(localVideo, { type: "sfu" });
+        // Publish local streams with isEnabled: false
+        const audioPublication = await me.publish(localAudio, {
+          type: "sfu",
+          isEnabled: false,
+        });
+        const videoPublication = await me.publish(localVideo, {
+          type: "sfu",
+          isEnabled: false,
+        });
+        audioPublicationRef.current = audioPublication;
+        videoPublicationRef.current = videoPublication;
 
         // Subscribe to existing publications
         const subscribeAndAttach = async (publication: RoomPublication) => {
@@ -168,6 +185,10 @@ export function useConference() {
     if (room) {
       await room.dispose();
     }
+    audioPublicationRef.current = null;
+    videoPublicationRef.current = null;
+    setIsAudioEnabled(false);
+    setIsVideoEnabled(false);
     setRoom(null);
     setState({
       isJoined: false,
@@ -182,6 +203,38 @@ export function useConference() {
       sttResults: [],
     });
   }, [state.localMember, room]);
+
+  const toggleAudio = useCallback(async () => {
+    const pub = audioPublicationRef.current;
+    if (!pub) return;
+    try {
+      if (pub.state === "enabled") {
+        await pub.disable();
+        setIsAudioEnabled(false);
+      } else {
+        await pub.enable();
+        setIsAudioEnabled(true);
+      }
+    } catch (err: unknown) {
+      console.error("Failed to toggle audio:", err);
+    }
+  }, []);
+
+  const toggleVideo = useCallback(async () => {
+    const pub = videoPublicationRef.current;
+    if (!pub) return;
+    try {
+      if (pub.state === "enabled") {
+        await pub.disable();
+        setIsVideoEnabled(false);
+      } else {
+        await pub.enable();
+        setIsVideoEnabled(true);
+      }
+    } catch (err: unknown) {
+      console.error("Failed to toggle video:", err);
+    }
+  }, []);
 
   const startSTT = useCallback(async () => {
     if (!token || !state.roomName) return;
@@ -245,6 +298,10 @@ export function useConference() {
 
   return {
     state,
+    isAudioEnabled,
+    isVideoEnabled,
+    toggleAudio,
+    toggleVideo,
     joinRoom,
     leaveRoom,
     startSTT,

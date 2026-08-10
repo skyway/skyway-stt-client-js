@@ -1,9 +1,12 @@
-import type { LogLevel } from "@skyway-sdk/common";
-import { Event } from "@skyway-sdk/common";
-import type { LocalRoomMember } from "@skyway-sdk/room";
+import type {
+  LocalRoomMember,
+  LogLevel,
+  SkyWayContextInterface,
+} from "@skyway-sdk/room";
+import { Event } from "@skyway-sdk/room";
 import type { STTResultReceivedEvent } from "./event";
 import { STTClient } from "./sttClient";
-import type { Logger, SkyWayContextInterface } from "./types";
+import type { Logger } from "./types";
 
 /**
  * SkyWay STTクライアントのオプション設定

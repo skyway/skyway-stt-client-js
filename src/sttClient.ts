@@ -1,12 +1,9 @@
-import {
-  Event,
-  type LogLevel,
-  Logger as SkyWayLogger,
-} from "@skyway-sdk/common";
+import type { LogLevel, SkyWayContextInterface } from "@skyway-sdk/room";
+import { Event, Logger as SkyWayLogger } from "@skyway-sdk/room";
 import WebSocket from "isomorphic-ws";
 import type { STTResultReceivedEvent } from "./event";
 import { LoggerWrapper } from "./loggerWrapper";
-import type { Logger, SkyWayContextInterface, STTResult } from "./types";
+import type { Logger, STTResult } from "./types";
 import { PACKAGE_VERSION } from "./version";
 
 const API_DOMAIN = "stt-dispatcher.skyway.ntt.com";

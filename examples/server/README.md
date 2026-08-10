@@ -127,7 +127,8 @@ curl -X POST http://localhost:9090/rooms/my-room/create
 **ボディ**:
 ```json
 {
-  "sttMode": "transcription" // または "translation"
+  "sttMode": "transcription", // または "translation"
+  "locales": ["ja-JP", "en-US"] // translationの場合は必須（異なる2つの言語を指定）、transcriptionの場合は省略可能（省略時は言語を自動判定）
 }
 ```
 
@@ -143,7 +144,7 @@ curl -X POST http://localhost:9090/rooms/my-room/create
 curl -X POST http://localhost:9090/rooms/my-room/start \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"sttMode": "transcription"}'
+  -d '{"sttMode": "translation", "locales": ["ja-JP", "en-US"]}'
 ```
 
 ### 文字起こしの終了
@@ -171,7 +172,7 @@ curl -X DELETE http://localhost:9090/rooms/my-room/end \
 ## STTモード
 
 - **transcription**: リアルタイム音声認識（文字起こし）
-- **translation**: リアルタイム音声認識と翻訳（日本語と英語をサポート）
+- **translation**: リアルタイム音声認識と翻訳（`locales`で指定した2言語間で翻訳）
 
 ## セキュリティ
 

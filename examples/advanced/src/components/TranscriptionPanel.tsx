@@ -11,9 +11,11 @@ interface TranscriptionPanelProps {
 
 export function TranscriptionPanel({
   results,
+  mode,
   isOpen,
   onClose,
 }: TranscriptionPanelProps) {
+  const resultLabel = mode === "translation" ? "translations" : "transcriptions";
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +29,6 @@ export function TranscriptionPanel({
   return (
     <div className="transcription-panel">
       <div className="transcription-header">
-        <h3>Live Transcription</h3>
         <button className="close-button" onClick={onClose}>
           <svg
             width="20"
@@ -44,9 +45,9 @@ export function TranscriptionPanel({
       <div className="transcription-content" ref={scrollRef}>
         {results.length === 0 ? (
           <div className="empty-state">
-            <p>No transcriptions yet</p>
+            <p>No {resultLabel} yet</p>
             <p className="empty-hint">
-              Start speaking to see live transcriptions
+              Start speaking to see {resultLabel}
             </p>
           </div>
         ) : (
@@ -67,7 +68,7 @@ export function TranscriptionPanel({
                   {result.texts?.map((t, i) => (
                     <div key={i} className="translation-item">
                       <span className="language-flag">
-                        {t.language === "ja" ? "🇯🇵" : "🇺🇸"}
+                        {t.locale === "ja-JP" ? "🇯🇵" : "🇺🇸"}
                       </span>
                       <p className="translation-text">{t.text}</p>
                     </div>

@@ -1,6 +1,3 @@
-import type { Event } from "@skyway-sdk/common";
-import type { ContextConfig } from "@skyway-sdk/room";
-
 /**
  * STTサーバーから受信するメッセージの型定義
  */
@@ -44,7 +41,7 @@ export type TranslationSTTResult = {
   /** 動作モード（翻訳） */
   mode: "translation";
   /** 各言語での翻訳結果の配列 */
-  texts: { language: string; text: string }[];
+  texts: { locale: string; text: string }[];
   /** 結果の一意識別子 */
   id: string;
   /** 音声が送信された日時 */
@@ -79,10 +76,3 @@ export type Logger = {
   /** エラーメッセージをログ出力 */
   error(...args: unknown[]): void;
 };
-
-// temporarily defined in this lib for backward compatibility, will be removed in future versions.
-export interface SkyWayContextInterface {
-  authTokenString: string;
-  config: ContextConfig;
-  readonly _onTokenUpdated: Event<string>;
-}

@@ -1,15 +1,45 @@
 packages:
-  - 'internal-examples/*'
+  - "internal-examples/*"
 
 catalog:
   "@types/node": "^22"
-  "@skyway-sdk/room": "2.1.0" # type errors about SkyWayContext raised in v2.3.0
+  "@skyway-sdk/room": "2.5.1"
   "@eslint/js": "^9.39.1"
   "@skyway-sdk/token": "^2.1.0"
   "eslint": "^9.39.1"
-  "eslint-plugin-react-hooks": "^7.0.1"
+  "eslint-plugin-react-hooks": "7.0.0"
   "eslint-plugin-react-refresh": "^0.4.24"
   "globals": "^16.5.0"
   "typescript": "~5.9.3"
   "typescript-eslint": "^8.46.4"
   "vite": "^7.2.4"
+
+minimumReleaseAge: 4320
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+
+blockExoticSubdeps: true
+
+strictDepBuilds: true
+dangerouslyAllowAllBuilds: false
+allowBuilds:
+  esbuild: true
+
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  # @types/node 経由で入る undici-types v6/v7 が共存し、no-downgrade が誤検知するため除外する。
+  # TODO: @types/node が undici-types@6.21.0 を参照しない version に上がったら外す。
+  - undici-types@6.21.0
+  # @skyway-sdk/room → @skyway-sdk/core@2.x 経由の推移的依存が誤検知するため除外する。
+  # TODO: @skyway-sdk/core が ua-parser-js@2 を参照するバージョンに更新されたら外す。
+  - ua-parser-js@1.0.41
+  # @vitejs/plugin-react → @babel/core 経由の推移的依存が誤検知するため除外する。
+  # TODO: @vitejs/plugin-react が @babel/core への依存をなくしたら外す。
+  - semver@6.3.1
+
+verifyStoreIntegrity: true
+strictStorePkgContentCheck: true
+
+pmOnFail: error
+
+savePrefix: ""

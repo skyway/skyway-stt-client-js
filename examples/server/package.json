@@ -12,9 +12,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.22.0",
   "dependencies": {
-    "@skyway-sdk/token": "^2.0.2",
+    "@skyway-sdk/token": "^2.1.5",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
